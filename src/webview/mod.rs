@@ -35,7 +35,8 @@ use self::webview2::*;
 
 use crate::{Error, Result};
 
-use std::{path::PathBuf, rc::Rc};
+use std::path::PathBuf;
+use std::sync::Arc;
 
 use serde_json::Value;
 use url::Url;
@@ -328,7 +329,7 @@ impl<'a> WebViewBuilder<'a> {
 
       self.webview.initialization_scripts.push(js.to_string());
     }
-    let window = Rc::new(self.window);
+    let window = Arc::new(self.window);
     let webview = InnerWebView::new(window.clone(), self.webview, self.web_context)?;
     Ok(WebView { window, webview })
   }
@@ -341,7 +342,7 @@ impl<'a> WebViewBuilder<'a> {
 /// [`WebView`] presents the actuall WebView window and let you still able to perform actions
 /// during event handling to it. [`WebView`] also contains the associate [`Window`] with it.
 pub struct WebView {
-  window: Rc<Window>,
+  window: Arc<Window>,
   webview: InnerWebView,
 }
 
