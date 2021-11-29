@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
 
-use std::rc::Rc;
+use std::sync::Arc;
 
 use gdk::{WindowEdge, RGBA};
 use gio::Cancellable;
@@ -32,16 +32,16 @@ use std::{
 mod file_drop;
 
 pub struct InnerWebView {
-  webview: Rc<WebView>,
+  webview: Arc<WebView>,
 }
 
 impl InnerWebView {
   pub fn new(
-    window: Rc<Window>,
+    window: Arc<Window>,
     mut attributes: WebViewAttributes,
     web_context: Option<&mut WebContext>,
   ) -> Result<Self> {
-    let window_rc = Rc::clone(&window);
+    let window_rc = Arc::clone(&window);
     let window = &window.gtk_window();
 
     // default_context allows us to create a scoped context on-demand
